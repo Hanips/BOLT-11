@@ -1,7 +1,9 @@
 from sly import Parser
 
-class parserBolt(Parser):
-    tokens = lexerBolt.tokens
+from BoltLexer import BoltLexer
+
+class BoltParser(Parser):
+    tokens = BoltLexer.tokens
 
     precedence = (
         ('left', '+', '-'),
@@ -73,8 +75,8 @@ class parserBolt(Parser):
         return('num', p.ANGKA)
 
 if __name__ == '__main__':
-    lexer = lexerBolt()
-    parser = parserBolt()
+    lexer = BoltLexer()
+    parser = BoltParser()
     env = {}
     while True:
         try:
