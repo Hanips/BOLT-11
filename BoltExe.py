@@ -33,47 +33,53 @@ class BoltExecute:
         if node[0] == 'str':
             return node[1]
         
-        if node[0] == 'jika':
+        if node[0] == 'print':
+            if node[1][0] == '"':
+                print(node[1][1:len(node[1])-1])
+            else:
+                return self.walkTree(node[1])
+
+        if node[0] == 'if_stmt':
             result = self.walkTree(node[1])
             if result:
                 return self.walkTree(node[2][1])
             return self.walkTree(node[2][2])
-        
-        if node[0] == 'samadengan':
+
+        if node[0] == 'condition_eqeq':
             return self.walkTree(node[1]) == self.walkTree(node[2])
-        
-        if node[0] == 'fungsi':
+
+        if node[0] == 'func_def':
             self.env[node[1]] = node[2]
-        
-        if node[0] == 'panggilFungsi':
+
+        if node[0] == 'func_call':
             try:
                 return self.walkTree(self.env[node[1]])
             except LookupError:
-                print("Fungsi belum didefinisikan '%s'" % node[1])
+                print("Undefined function '%s'" % node[1])
                 return 0
-        
-        if node[0] == 'tambah':
+
+        if node[0] == 'add':
             return self.walkTree(node[1]) + self.walkTree(node[2])
-        elif node[0] == 'kurang':
+        elif node[0] == 'sub':
             return self.walkTree(node[1]) - self.walkTree(node[2])
-        elif node[0] == 'kali':
+        elif node[0] == 'mul':
             return self.walkTree(node[1]) * self.walkTree(node[2])
-        elif node[0] == 'bagi':
-            return self.walkTree(node[1]) / self.walkTree(node[2])
-        
+        elif node[0] == 'div':
+            return int(self.walkTree(node[1]) / self.walkTree(node[2]))
+
         if node[0] == 'var_assign':
             self.env[node[1]] = self.walkTree(node[2])
             return node[1]
-        
+
         if node[0] == 'var':
             try:
                 return self.env[node[1]]
             except LookupError:
-                print("Variable '" + node[1] + "' belum didefinisikan!")
+                print("Undefined variable '"+node[1]+"' found!")
                 return 0
-        
-        if node[0] == 'untuk_loop':
-            if node[1][0] == 'untuk_loop_setup':
+
+        if node[0] == 'for_loop':
+            if node[1][0] == 'for_loop_setup':
                 loop_setup = self.walkTree(node[1])
 
                 loop_count = self.env[loop_setup[0]]
@@ -85,20 +91,18 @@ class BoltExecute:
                         print(res)
                     self.env[loop_setup[0]] = i
                 del self.env[loop_setup[0]]
-        
-        if node[0] == 'untuk_loop_setup':
+
+        if node[0] == 'for_loop_setup':
             return (self.walkTree(node[1]), self.walkTree(node[2]))
 
 if __name__ == '__main__':
-    lexer = BoltLexer()
-    parser = BoltParser()
-    print('BOLT-11 Language')
+    lexer = BoltLexer.BoltLexer()
+    parser = BoltParser.BoltParser()
     env = {}
     while True:
         try:
-            text = input('bolt-11> ')
+            text = input('bolt-11 > ')
         except EOFError:
-            print("Error")
             break
         if text:
             tree = parser.parse(lexer.tokenize(text))
