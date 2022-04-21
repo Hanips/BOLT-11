@@ -1,9 +1,9 @@
 from sly import Parser
 
-from BoltLexer import BoltLexer
+import BoltLexer
 
 class BoltParser(Parser):
-    tokens = BoltLexer.tokens
+    tokens = BoltLexer.BoltLexer.tokens
 
     precedence = (
         ('left', '+', '-'),
@@ -18,17 +18,37 @@ class BoltParser(Parser):
     def statement(self, p):
         pass
 
+    @_('FOR var_assign TO expr THEN statement')
+    def statement(self, p):
+        return ('for_loop', ('for_loop_setup', p.var_assign, p.expr), p.statement)
+
+    @_('IF condition THEN statement ELSE statement')
+    def statement(self, p):
+        return ('if_stmt', p.condition, ('branch', p.statement0, p.statement1))
+
+    @_('FUNC NAME "(" ")" ARROW statement')
+    def statement(self, p):
+        return ('func_def', p.NAME, p.statement)
+
+    @_('NAME "(" ")"')
+    def statement(self, p):
+        return ('func_call', p.NAME)
+
+    @_('expr EQEQ expr')
+    def condition(self, p):
+        return ('condition_eqeq', p.expr0, p.expr1)
+
     @_('var_assign')
     def statement(self, p):
         return p.var_assign
     
-    @_('NAMA "=" expr')
+    @_('NAME "=" expr')
     def var_assign(self, p):
-        return('var_assign', p.NAMA, p.expr)
+        return('var_assign', p.NAME, p.expr)
 
-    @_('NAMA "=" STRING')
+    @_('NAME "=" STRING')
     def var_assign(self, p):
-        return('var_assign', p.NAMA, p.STRING)
+        return('var_assign', p.NAME, p.STRING)
     
     @_('expr')
     def statement(self, p):
@@ -36,19 +56,19 @@ class BoltParser(Parser):
     
     @_('expr "+" expr')
     def expr(self, p):
-        return ('tambah', p.expr0, p.expr1)
+        return ('add', p.expr0, p.expr1)
 
     @_('expr "-" expr')
     def expr(self, p):
-        return ('kurang', p.expr0, p.expr1)
+        return ('sub', p.expr0, p.expr1)
     
     @_('expr "/" expr')
     def expr(self, p):
-        return ('bagi', p.expr0, p.expr1)
+        return ('div', p.expr0, p.expr1)
     
     @_('expr "*" expr')
     def expr(self, p):
-        return ('kali', p.expr0, p.expr1)
+        return ('mul', p.expr0, p.expr1)
     
     @_('expr "%" expr')
     def expr(self, p):
@@ -66,16 +86,24 @@ class BoltParser(Parser):
     def expr(self, p):
         return p.expr
     
-    @_('NAMA')
+    @_('NAME')
     def expr(self, p):
-        return('var', p.NAMA)
+        return('var', p.NAME)
     
-    @_('ANGKA')
+    @_('NUMBER')
     def expr(self, p):
-        return('num', p.ANGKA)
+        return('num', p.NUMBER)
+
+    @_('PRINT expr')
+    def expr(self, p):
+        return ('print', p.expr)
+
+    @_('PRINT STRING')
+    def statement(self, p):
+        return ('print', p.STRING)
 
 if __name__ == '__main__':
-    lexer = BoltLexer()
+    lexer = BoltLexer.BoltLexer()
     parser = BoltParser()
     env = {}
     while True:
