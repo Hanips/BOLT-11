@@ -1,7 +1,7 @@
-import lexerBolt
-import parserBolt
+import BoltLexer
+import BoltParser
 
-class boltExecute:
+class BoltExecute:
 
     def __init__(self, tree, env):
         self.env = env
@@ -90,8 +90,8 @@ class boltExecute:
             return (self.walkTree(node[1]), self.walkTree(node[2]))
 
 if __name__ == '__main__':
-    lexer = lexerBolt()
-    parser = parserBolt()
+    lexer = BoltLexer()
+    parser = BoltParser()
     print('BOLT-11 Language')
     env = {}
     while True:
@@ -102,4 +102,4 @@ if __name__ == '__main__':
             break
         if text:
             tree = parser.parse(lexer.tokenize(text))
-            boltExecute(tree, env)
+            BoltExecute(tree, env)
