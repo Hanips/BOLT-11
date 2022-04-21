@@ -1,22 +1,21 @@
 from sly import Lexer
 
-class lexerBolt(Lexer):
-    tokens = {NAMA, ANGKA, STRING, JIKA, MAKA, LAIN, UNTUK, FUNC, SAMPAI, SAMADENGAN}
+class BoltLexer(Lexer):
+    tokens = {NAMA, ANGKA, STRING, JIKA, MAKA, LAIN, UNTUK, FUNG, SAMPAI, SAMADENGAN}
     ignore = '\t '
-
     literals = {'=', '+', '-', '/', '*', '(', ')', ',', ';', '<', '>', '<=', '>=', '%'}
 
     #Definisi Token
+    NAMA = r'[a-zA-Z_][a-zA-Z0-9_]*'
+    STRING = r'\".*?\"'
     JIKA = r'JIKA'
     MAKA = r'MAKA'
     LAIN = r'LAIN'
     UNTUK = r'UNTUK'
-    FUNC = r'FUNC'
+    FUNG = r'FUNG'
     SAMPAI = r'SAMPAI'
     SAMADENGAN = r'=='
-    NAMA = r'[a-zA-Z_][a-zA-Z0-9_]*'
-    STRING = r'\".*?\"'
-
+    
     #Number Token
     @_(r'\d+')
     def ANGKA(self, t):
@@ -32,7 +31,7 @@ class lexerBolt(Lexer):
         self.lineno = t.value.count('\n')
 
 if __name__ == '__main__':
-    lexer = lexerBolt()
+    lexer = BoltLexer()
     env = {}
     while True:
         try:
