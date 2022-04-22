@@ -1,26 +1,26 @@
 from sly import Lexer
 
 class BoltLexer(Lexer):
-    tokens = { PRINT, NAME, NUMBER, STRING, IF, THEN, ELSE, FOR, FUNC, TO, ARROW, EQEQ }
+    tokens = { CETAK, NAMA, NOMOR, STRING, JIKA, MAKA, KEMUDIAN, UNTUK, FUNG, SAMPAI, PANAH, SAMADENGAN }
     ignore = '\t '
     literals = {'=', '+', '-', '/', '*', '(', ')', ',', ';'}
 
     #Definisi Token
-    PRINT = r'cetak'
-    NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
+    CETAK = r'cetak'
+    NAMA = r'[a-zA-Z_][a-zA-Z0-9_]*'
     STRING = r'\".*?\"'
-    IF = r'jika'
-    THEN = r'maka'
-    ELSE = r'lain'
-    FOR = r'loop'
-    FUNC = r'fungsi'
-    TO = r'sampai'
-    ARROW = r'->'
-    EQEQ = r'=='
+    JIKA = r'jika'
+    MAKA = r'maka'
+    KEMUDIAN = r'kemudian'
+    UNTUK = r'loop'
+    FUNG = r'fungsi'
+    SAMPAI = r'sampai'
+    PANAH = r'->'
+    SAMADENGAN = r'=='
     
     #Number Token
     @_(r'\d+')
-    def NUMBER(self, t):
+    def NOMOR(self, t):
         t.value = int(t.value)
         return t
     #Comment Token
