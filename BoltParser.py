@@ -18,37 +18,37 @@ class BoltParser(Parser):
     def statement(self, p):
         pass
 
-    @_('FOR var_assign TO expr THEN statement')
+    @_('UNTUK var_assign SAMPAI expr MAKA statement')
     def statement(self, p):
-        return ('for_loop', ('for_loop_setup', p.var_assign, p.expr), p.statement)
+        return ('untuk_loop', ('untuk_loop_setup', p.var_assign, p.expr), p.statement)
 
-    @_('IF condition THEN statement ELSE statement')
+    @_('JIKA condition MAKA statement KEMUDIAN statement')
     def statement(self, p):
-        return ('if_stmt', p.condition, ('branch', p.statement0, p.statement1))
+        return ('jika_stmt', p.condition, ('branch', p.statement0, p.statement1))
 
-    @_('FUNC NAME "(" ")" ARROW statement')
+    @_('FUNG NAMA "(" ")" PANAH statement')
     def statement(self, p):
-        return ('func_def', p.NAME, p.statement)
+        return ('fung_def', p.NAMA, p.statement)
 
-    @_('NAME "(" ")"')
+    @_('NAMA "(" ")"')
     def statement(self, p):
-        return ('func_call', p.NAME)
+        return ('fung_call', p.NAMA)
 
-    @_('expr EQEQ expr')
+    @_('expr SAMADENGAN expr')
     def condition(self, p):
-        return ('condition_eqeq', p.expr0, p.expr1)
+        return ('condition_samadengan', p.expr0, p.expr1)
 
     @_('var_assign')
     def statement(self, p):
         return p.var_assign
     
-    @_('NAME "=" expr')
+    @_('NAMA "=" expr')
     def var_assign(self, p):
-        return('var_assign', p.NAME, p.expr)
+        return('var_assign', p.NAMA, p.expr)
 
-    @_('NAME "=" STRING')
+    @_('NAMA "=" STRING')
     def var_assign(self, p):
-        return('var_assign', p.NAME, p.STRING)
+        return('var_assign', p.NAMA, p.STRING)
     
     @_('expr')
     def statement(self, p):
@@ -86,21 +86,21 @@ class BoltParser(Parser):
     def expr(self, p):
         return p.expr
     
-    @_('NAME')
+    @_('NAMA')
     def expr(self, p):
-        return('var', p.NAME)
+        return('var', p.NAMA)
     
-    @_('NUMBER')
+    @_('NOMOR')
     def expr(self, p):
-        return('num', p.NUMBER)
+        return('num', p.NOMOR)
 
-    @_('PRINT expr')
+    @_('CETAK expr')
     def expr(self, p):
-        return ('print', p.expr)
+        return ('cetak', p.expr)
 
-    @_('PRINT STRING')
+    @_('CETAK STRING')
     def statement(self, p):
-        return ('print', p.STRING)
+        return ('cetak', p.STRING)
 
 if __name__ == '__main__':
     lexer = BoltLexer.BoltLexer()
