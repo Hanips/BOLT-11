@@ -45,7 +45,7 @@ class BoltExecute:
                 return self.walkTree(node[2][1])
             return self.walkTree(node[2][2])
 
-        if node[0] == 'condition_eqeq':
+        if node[0] == 'condition_samadengan':
             return self.walkTree(node[1]) == self.walkTree(node[2])
 
         if node[0] == 'func_def':
