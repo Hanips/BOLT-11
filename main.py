@@ -4,17 +4,12 @@ import BoltParser
 
 from sys import *
 
-if __name__ == '__main__':
-    lexer = BoltLexer.BoltLexer()
-    parser = BoltParser.BoltParser()
-    print('BOLT-11 Language')
-    env = {}
-    while True:
-        try:
-            text = input('bolt-11> ')
-        except EOFError:
-            print("Error")
-            break
-        if text:
-            tree = parser.parse(lexer.tokenize(text))
-            BoltExe.BoltExecute(tree, env)
+lexer = BoltLexer.BoltLexer()
+parser = BoltParser.BoltParser()
+env = {}
+
+file = open(argv[1])
+text = file.readlines()
+for line in text:
+    tree = parser.parse(lexer.tokenize(line))
+    BoltExe.BoltExecute(tree, env)
