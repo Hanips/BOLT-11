@@ -1,35 +1,35 @@
 from sly import Lexer
 
 class BoltLexer(Lexer):
-    tokens = { CETAK, NAMA, NOMOR, STRING, JIKA, MAKA, KEMUDIAN, UNTUK, FUNG, SAMPAI, PANAH, SAMADENGAN }
+    tokens = { PRINT, NAME, NUMBER, STRING, IF, THEN, ELSE, FOR, FUN, TO, ARROW, EQEQ }
     ignore = '\t '
-    literals = {'=', '+', '-', '/', '*', '(', ')', ',', ';'}
 
-    #Definisi Token
-    CETAK = r'cetak'
-    NAMA = r'[a-zA-Z_][a-zA-Z0-9_]*'
+    literals = { '=', '+', '-', '/', '*', '(', ')', ',', ';' }
+
+    PRINT = r'CETAK'
+    IF = r'JIKA'
+    THEN = r'MAKA'
+    ELSE = r'KEMUDIAN'
+    FOR = r'UNTUK'
+    TO = r'SAMPAI'
+    FUN = r'FUNGSI'
+    ARROW = r'-->'
+    NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
     STRING = r'\".*?\"'
-    JIKA = r'jika'
-    MAKA = r'maka'
-    KEMUDIAN = r'kemudian'
-    UNTUK = r'loop'
-    FUNG = r'fungsi'
-    SAMPAI = r'sampai'
-    PANAH = r'->'
-    SAMADENGAN = r'=='
     
-    #Number Token
+    EQEQ = r'=='
+
     @_(r'\d+')
-    def NOMOR(self, t):
+    def NUMBER(self, t):
         t.value = int(t.value)
         return t
-    #Comment Token
+
     @_(r'#.*')
     def COMMENT(self, t):
         pass
-    #Newline Token
+
     @_(r'\n+')
-    def newline(self, t):
+    def newline(self,t ):
         self.lineno = t.value.count('\n')
 
 if __name__ == '__main__':
