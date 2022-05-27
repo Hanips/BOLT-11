@@ -75,7 +75,7 @@ class BoltExecute:
             try:
                 return self.env[node[1]]
             except LookupError:
-                print("Undefined variable '"+node[1]+"' found!")
+                print("Undefined variable'"+node[1]+"' found!")
                 return 0
 
         if node[0] == 'for_loop':
@@ -85,7 +85,8 @@ class BoltExecute:
                 loop_count = self.env[loop_setup[0]]
                 loop_limit = loop_setup[1]
 
-                for i in range(loop_count+1, loop_limit+1):
+                for i in range(loop_count+1,
+                loop_limit+1):
                     res = self.walkTree(node[2])
                     if res is not None:
                         print(res)
