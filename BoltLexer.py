@@ -1,22 +1,22 @@
 from sly import Lexer
 
 class BoltLexer(Lexer):
-    tokens = { PRINT, NAME, NUMBER, STRING, IF, THEN, ELSE, FOR, FUN, TO, ARROW, EQEQ }
+    tokens = { NAME, NUMBER, STRING, IF, PRINT, THEN, ELSE, FOR, FUN, TO, ARROW, EQEQ }
     ignore = '\t '
 
-    literals = { '=', '+', '-', '/', '*', '(', ')', ',', ';' }
+    literals = { '=', '+', '-', '/', '*', '(', ')', ',', ';', '<', '>' , ':'}
 
-    PRINT = r'CETAK'
+    # pendefinisian token
     IF = r'JIKA'
+    PRINT = r'CETAK'
     THEN = r'MAKA'
     ELSE = r'KEMUDIAN'
     FOR = r'UNTUK'
-    TO = r'SAMPAI'
     FUN = r'FUNGSI'
-    ARROW = r'-->'
+    TO = r'SAMPAI'
+    ARROW = r'->'
     NAME = r'[a-zA-Z_][a-zA-Z0-9_]*'
     STRING = r'\".*?\"'
-    
     EQEQ = r'=='
 
     @_(r'\d+')
